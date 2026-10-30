@@ -1,0 +1,27 @@
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+
+# Python 虚拟环境
+.venv/
+venv/
+env/
+
+# IDE 配置
+.vscode/
+
+# 本地数据库和运行数据
+data/*.db
+data/*.db-journal
+data/thumbnails/*
+data/generated/*
+
+# 上传文件和临时文件
+uploads/
+temp/
+*.log
+
+# 系统文件
+.DS_Store
+Thumbs.db
