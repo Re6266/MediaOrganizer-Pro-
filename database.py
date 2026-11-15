@@ -1,9 +1,32 @@
 
 import sqlite3
+import hashlib
+from pathlib import Path
 from dataclasses import asdict, is_dataclass
 
 from config import DATABASE_PATH
 
+def calculate_file_hash(file_path):
+    """
+    使用 SHA-256 计算文件哈希值
+    用于检测完全重复的文件
+    """
+    sha256 = hashlib.sha256()
+
+    try:
+        with open(file_path, "rb") as f:
+            while True:
+                chunk = f.read(4096)
+
+                if not chunk:
+                    break
+
+                sha256.update(chunk)
+
+        return sha256.hexdigest()
+
+    except (OSError, IOError):
+        return None
 
 def get_connection():
     """获取数据库连接"""
@@ -414,6 +437,36 @@ def add_operation_log(
     finally:
         conn.close()
 
+def save_duplicate_hashes():
+    """
+    将图片 SHA-256 保存到数据库 media 表
+    """
+
+    conn = get_connection()
+
+    try:
+        rows = conn.execute(
+            "SELECT id, file_path FROM media WHERE file_type='image'"
+        ).fetchall()
+
+        for row in rows:
+
+            file_hash = calculate_file_hash(row["file_path"])
+
+            if file_hash is None:
+                continue
+
+            conn.execute(
+                "UPDATE media SET file_hash=? WHERE id=?",
+                (file_hash, row["id"])
+            )
+
+        conn.commit()
+
+    finally:
+        conn.close()
+
 
 if __name__ == "__main__":
     init_database()
+
