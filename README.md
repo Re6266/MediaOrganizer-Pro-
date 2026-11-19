@@ -31,6 +31,12 @@ streamlit run app.py
 - 重复检测
 - 媒体浏览与照片组
 
+## 界面与设计原型
+
+界面视觉沿用小组交互原型（仓库外 `prototype/` 目录）的立体主义风格：米色画布、深褐墨色、2px 硬边框与偏移阴影、零圆角。实现方式为 `modules/ui_theme.py` 注入 CSS 与页面头组件，只改样式层，不改数据流与页面结构，因此不影响八周计划中的技术栈与分工。
+
+原型本身是纯静态演示（12 个素材、浏览器 localStorage、不读写真实文件），仅作设计参考，不作为运行版本；真实功能由本仓库的 Streamlit 应用承担。
+
 ## 测试
 
 ```powershell
@@ -43,7 +49,7 @@ python -m unittest discover -s tests -p "test_week4.py" -v
 ```text
 app.py                         Streamlit 首页入口
 pages/                         各功能页面
-modules/                       扫描、元数据、检测和媒体库业务模块
+modules/                       扫描、元数据、检测、媒体库与界面主题模块
 database.py                    SQLite 初始化与基础数据访问
 tests/                         自动化测试
 weekly-report/                 周报

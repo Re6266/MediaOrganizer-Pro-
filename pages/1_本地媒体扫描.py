@@ -5,18 +5,18 @@ import streamlit as st
 from database import get_connection, get_all_media, init_database
 from modules.scanner import scan_folder
 from modules.folder_dialog import choose_folder
+from modules.ui_theme import apply_theme, page_header, section_label
 
-st.markdown("""
-<style>
-.stApp { font-size: 18px; }
-.stTextInput label p, .stButton button p, .stMarkdown p { font-size: 18px; }
-.stButton button { min-height: 48px; padding: 0.5rem 1.5rem; }
-</style>
-""", unsafe_allow_html=True)
+apply_theme("本地媒体扫描", "📂")
+page_header(
+    "STEP 01 · 建立索引",
+    "本地媒体扫描",
+    "选择文件夹，扫描其中的图片和视频。原始文件不会被移动或修改。",
+)
 
-st.title('本地媒体扫描')
-st.write('选择文件夹，扫描其中的图片和视频。原始文件不会被移动或修改。')
-if st.button('选择文件夹'):
+section_label("选择来源", "支持子文件夹递归扫描")
+
+if st.button("选择文件夹"):
     try:
         selected = choose_folder()
         if selected:
@@ -39,7 +39,7 @@ if st.button('开始扫描', type='primary'):
 init_database()
 items = get_all_media()
 st.divider()
-st.subheader('媒体库概览')
+section_label('媒体库概览', f"{len(items)} 条索引")
 total, images, videos = st.columns(3)
 total.metric('媒体总数', len(items))
 images.metric('图片', sum(item['file_type'] == 'image' for item in items))
@@ -48,7 +48,8 @@ videos.metric('视频', sum(item['file_type'] == 'video' for item in items))
 if not items:
     st.info('还没有媒体记录。选择文件夹后点击“开始扫描”。')
 else:
-    st.subheader('最近添加的媒体')
+    st.divider()
+    section_label('最近添加的媒体', '最多显示 12 项')
     with closing(get_connection()) as conn:
         exists = conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='media_thumbnails'").fetchone()
         thumbnails = {row['media_id']: row['thumbnail_path'] for row in conn.execute(

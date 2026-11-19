@@ -6,10 +6,14 @@ from modules.media_library import (
     add_group_members, create_manual_group, list_detected_groups, list_manual_groups,
     list_media, remove_group_member,
 )
+from modules.ui_theme import apply_theme, page_header, section_label
 
-st.set_page_config(page_title="媒体浏览与照片组", page_icon="🖼️", layout="wide")
-st.title("媒体浏览与照片组")
-st.caption("浏览已索引的媒体，查看第三周检测候选组，并按需要建立或调整人工照片组。不会修改原始文件。")
+apply_theme("媒体浏览与照片组", "🖼️")
+page_header(
+    "STEP 03 · 浏览与分组",
+    "媒体浏览与照片组",
+    "按条件筛选媒体，查看检测候选组，建立或调整人工照片组。所有操作只改数据库，不动原始文件。",
+)
 
 
 def show_thumbnail(item, caption_prefix=""):
@@ -34,7 +38,7 @@ start = dates[0] if isinstance(dates, tuple) and len(dates) == 2 else None
 end = dates[1] if isinstance(dates, tuple) and len(dates) == 2 else None
 media = list_media(keyword, kind, folder, start, end)
 
-st.subheader(f"媒体库（{len(media)} 项）")
+section_label("媒体库", f"{len(media)} 项")
 if not media:
     st.info("没有符合条件的媒体。请先在“本地媒体扫描”页面建立索引，或调整筛选条件。")
 else:
@@ -58,7 +62,7 @@ else:
                 st.code(item["file_path"], language=None)
 
 st.divider()
-st.subheader("检测候选组")
+section_label("检测候选组", "来自第三周算法结果")
 detected = list_detected_groups()
 if not detected:
     st.info("尚无已保存的重复或相似检测结果。可先完成扫描并运行检测。")
@@ -89,7 +93,7 @@ else:
                 st.error(str(exc))
 
 st.divider()
-st.subheader("人工照片组管理")
+section_label("人工照片组管理", "可编辑 · 不影响候选组")
 options = {f"{item['file_name']} 〔#{item['id']}〕": item["id"] for item in media}
 with st.form("create_manual_group", clear_on_submit=True):
     name = st.text_input("新照片组名称")

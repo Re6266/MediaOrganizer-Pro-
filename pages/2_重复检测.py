@@ -11,12 +11,13 @@ from modules.duplicate_detector import find_duplicate_files
 from modules.media_library import list_media
 from modules.similarity_detector import find_similar_images
 from modules.similarity_group import group_similar_images
+from modules.ui_theme import apply_theme, page_header, section_label
 
-st.set_page_config(page_title="重复与相似检测", page_icon="🔍", layout="wide")
-st.title("重复与相似检测")
-st.caption(
-    "使用 SHA-256 识别内容完全一致的文件，使用 pHash 识别视觉相似的图片。"
-    "检测只读取已索引的图片，不会移动、改名或删除原始文件。"
+apply_theme("重复与相似检测", "🔍")
+page_header(
+    "STEP 02 · 识别冗余",
+    "重复与相似检测",
+    "SHA-256 识别内容完全一致的文件，pHash 识别视觉相似的图片。只读取已索引图片，不改动原始文件。",
 )
 
 # ==========================
@@ -45,7 +46,7 @@ if not available:
 # 2. 检测参数
 # ==========================
 
-st.subheader("检测参数")
+section_label("检测参数", "阈值越小越严格")
 threshold = st.slider(
     "相似判定阈值（汉明距离，0-32）",
     min_value=0, max_value=32, value=15,
@@ -115,7 +116,7 @@ def render_members(paths, caption_builder=None):
 
 if run_data:
     st.divider()
-    st.subheader("本次检测结果")
+    section_label("本次检测结果", "已写入数据库")
     duplicate_groups = run_data["duplicate_result"]["groups"]
     hashes = run_data["similarity_result"]["hashes"]
     summary = run_data["summary"]
@@ -158,7 +159,7 @@ if run_data:
 # ==========================
 
 st.divider()
-st.subheader("数据库中已保存的检测结果")
+section_label("数据库中已保存的检测结果")
 ensure_detection_tables()
 duplicate_rows, similar_rows = get_saved_detection_results()
 
