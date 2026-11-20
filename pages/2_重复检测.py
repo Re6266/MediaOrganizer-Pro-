@@ -82,7 +82,8 @@ if run:
         "summary": summary,
     }
     st.success(
-        f"检测完成：完全重复 {summary['duplicate_groups']} 个文件、"
+        f"检测完成：完全重复 {summary['duplicate_groups']} 组 / "
+        f"{summary['duplicate_files']} 个文件、"
         f"相似组 {summary['similarity_groups']} 组、相似对 {summary['similarity_pairs']} 对，结果已保存。"
     )
 

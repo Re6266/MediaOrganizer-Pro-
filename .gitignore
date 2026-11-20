@@ -16,6 +16,8 @@ data/*.db
 data/*.db-journal
 data/thumbnails/*
 data/generated/*
+data/*.bak
+data/*.bak/
 
 # 上传文件和临时文件
 uploads/

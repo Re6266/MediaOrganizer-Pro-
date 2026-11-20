@@ -90,7 +90,8 @@ class TestMediaLibrary(unittest.TestCase):
         similar_groups = group_similar_images(similarity_result["pairs"])
         summary = save_detection_results(duplicate_result, similarity_result, similar_groups)
 
-        self.assertEqual(summary["duplicate_groups"], 2)
+        self.assertEqual(summary["duplicate_groups"], 1)
+        self.assertEqual(summary["duplicate_files"], 2)
         duplicate_groups = [
             group for group in media_library.list_detected_groups() if group["kind"] == "完全重复"
         ]

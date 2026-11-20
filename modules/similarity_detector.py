@@ -3,12 +3,24 @@ import numpy as np
 from pathlib import Path
 
 
+def _read_image(image_path):
+    """读取图片，兼容 Windows 下的中文路径。
+
+    cv2.imread 在 Windows 上无法处理非 ASCII 路径，会直接返回 None，
+    因此改为先以字节读入再用 imdecode 解码。
+    """
+    data = np.fromfile(str(image_path), dtype=np.uint8)
+    if data.size == 0:
+        return None
+    return cv2.imdecode(data, cv2.IMREAD_COLOR)
+
+
 def calculate_phash(image_path):
     """
     使用感知哈希算法计算图片哈希值
     """
 
-    image = cv2.imread(str(image_path))
+    image = _read_image(image_path)
 
     if image is None:
         raise ValueError(f"无法读取图片：{image_path}")

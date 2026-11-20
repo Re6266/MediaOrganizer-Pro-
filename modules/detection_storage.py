@@ -103,6 +103,7 @@ def save_detection_results(
 
         # 2. 保存完全重复图片组
         duplicate_count = 0
+        duplicate_file_count = 0
 
         for group in duplicate_result.get("groups", []):
 
@@ -134,7 +135,8 @@ def save_detection_results(
                 ]
             )
 
-            duplicate_count += len(member_ids)
+            duplicate_count += 1
+            duplicate_file_count += len(member_ids)
 
         # 3. 保存 pHash 哈希值，并清除旧的相似分组标记
         for path, phash in similarity_result.get("hashes", {}).items():
@@ -217,6 +219,7 @@ def save_detection_results(
 
         return {
             "duplicate_groups": duplicate_count,
+            "duplicate_files": duplicate_file_count,
             "similarity_groups": sum(
                 1 for group in similarity_groups if len(group) > 1
             ),
