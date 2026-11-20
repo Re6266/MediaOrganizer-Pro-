@@ -3,7 +3,7 @@ import streamlit as st
 
 from database import init_database, get_all_media
 from config import DATABASE_PATH, APP_NAME
-from modules.ui_theme import apply_theme, page_header, section_label
+from modules.ui_theme import apply_theme, hero_banner, page_header, section_label
 
 
 # ==========================
@@ -28,6 +28,14 @@ page_header(
     "LOCAL MEDIA WORKSPACE",
     "MediaOrganizer-Pro",
     "本地媒体库智能索引与整理建议工具 · 索引、重复识别、智能选片与安全整理",
+)
+
+hero_banner(
+    "PRIVACY FIRST · 全程本地处理",
+    "所有分析都在本机完成，原始文件只读不动",
+    "扫描目录建立索引，用 SHA-256 找出完全重复的文件，用感知哈希找出视觉相似的图片。"
+    "整理建议先预览、再确认，任何一步都不会自动删掉你的照片。",
+    "入口 · 左侧 02 重复与相似检测 → 03 浏览与分组",
 )
 
 st.divider()
@@ -114,21 +122,21 @@ st.divider()
 section_label("模块进度", "按八周计划推进")
 
 features = [
-    ("本地媒体扫描与索引", "已完成", "#3d5c6e"),
-    ("完全重复与相似图片检测", "已完成", "#3d5c6e"),
-    ("媒体浏览、筛选与照片组管理", "已完成", "#3d5c6e"),
-    ("图片质量评价与智能选片", "第5–6周", "#9b3d25"),
-    ("AI 最佳瞬间合成", "第5周", "#9b3d25"),
-    ("安全整理与操作日志", "第7周", "#9b3d25"),
+    ("本地媒体扫描与索引", "已完成", "#eaf2ee", "#4c8064"),
+    ("完全重复与相似图片检测", "已完成", "#eaf2ee", "#4c8064"),
+    ("媒体浏览、筛选与照片组管理", "已完成", "#eaf2ee", "#4c8064"),
+    ("AI 最佳瞬间合成", "第5周", "#fbf4e7", "#b49861"),
+    ("图片质量评价与智能选片", "第5–6周", "#fbf4e7", "#b49861"),
+    ("安全整理与操作日志", "第7周", "#fbf4e7", "#b49861"),
 ]
 
-for name, status, color in features:
+for name, status, bg, fg in features:
     st.markdown(
         f'<div style="display:flex;align-items:center;justify-content:space-between;'
-        f'border-bottom:2px solid #b9a78b;padding:10px 2px">'
-        f'<span style="font-weight:700;font-size:13px">{name}</span>'
-        f'<span style="font-size:10px;font-weight:800;letter-spacing:1px;color:#f3eadb;'
-        f'background:{color};border:2px solid #5c4033;padding:2px 8px">{status}</span>'
+        f'border-bottom:1px solid #e8ece9;padding:12px 2px">'
+        f'<span style="font-weight:500;font-size:12px;color:#24332f">{name}</span>'
+        f'<span style="font-size:9px;font-weight:500;color:{fg};'
+        f'background:{bg};padding:4px 8px;border-radius:4px">{status}</span>'
         f'</div>',
         unsafe_allow_html=True,
     )
